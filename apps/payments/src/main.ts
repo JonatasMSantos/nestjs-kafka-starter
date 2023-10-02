@@ -1,9 +1,9 @@
 import { NestFactory } from '@nestjs/core';
-import { OrdersModule } from './orders.module';
+import { PaymentsModule } from './payments.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
-  const app = await NestFactory.create(OrdersModule);
+  const app = await NestFactory.create(PaymentsModule);
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.KAFKA,
     options:  {
@@ -11,12 +11,12 @@ async function bootstrap() {
         brokers: ['kafka:29092']
       },
       consumer: {
-        groupId: 'orders-consumer',
+        groupId: 'payments-consumer',
       }
     }
   })
 
   await app.startAllMicroservices()
-  await app.listen(3000);
+  await app.listen(3001);
 }
 bootstrap();
